@@ -11,7 +11,7 @@ const ID = () => {
 	const { id } = router.query;
 	const [contractAddress, setContractAddress] = useState<null | string>(null);
 	const [abi, setAbi] = useState<null | Array<any>>(null);
-	const [params, setParams] = useState<any>();
+	const [params, setParams] = useState<any>("");
 
 	let contract: any;
 
@@ -38,7 +38,7 @@ const ID = () => {
 		let funcName = abi && abi[parseInt(id as string)].name;
 		console.log(contract);
 		try {
-			let txn = await contract.cutDenominator;
+			let txn = await contract[funcName](...Object.values(params));
 			console.log(txn);
 		} catch (e) {
 			alert("error occurred, check console");
@@ -62,6 +62,7 @@ const ID = () => {
 										placeholder={el.name}
 										onChange={(e: any) => {
 											setParams({
+												...params,
 												[el.name]: e.target.value,
 											});
 										}}
