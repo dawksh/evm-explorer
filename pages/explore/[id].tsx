@@ -12,6 +12,7 @@ const ID = () => {
 	const [contractAddress, setContractAddress] = useState<null | string>(null);
 	const [abi, setAbi] = useState<null | Array<any>>(null);
 	const [params, setParams] = useState<any>("");
+	const [fee, setFee] = useState<any>("0");
 
 	let contract: any;
 
@@ -38,7 +39,9 @@ const ID = () => {
 		let funcName = abi && abi[parseInt(id as string)].name;
 		console.log(contract);
 		try {
-			let txn = await contract[funcName](...Object.values(params));
+			let txn = await contract[funcName](...Object.values(params), {
+				value: ethers.utils.parseEther(fee),
+			});
 			console.log(txn);
 		} catch (e) {
 			alert("error occurred, check console");
@@ -69,6 +72,17 @@ const ID = () => {
 									/>
 								)
 							)}
+						{abi &&
+						abi[parseInt(id as string)].stateMutability ===
+							"payable" ? (
+							<Input
+								my={4}
+								placeholder="Value in Ether"
+								onChange={(e) => setFee(e.target.value)}
+							/>
+						) : (
+							false
+						)}
 						<Button p={4} onClick={runTxn} my={6}>
 							Run{" "}
 						</Button>
