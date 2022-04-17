@@ -11,8 +11,12 @@ function Explore() {
 
 	useEffect(() => {
 		let details = JSON.parse(localStorage.getItem("details") as string);
-		setContractAddress(details.address);
-		setAbi(details.functions);
+		if (details) {
+			setContractAddress(details.address);
+			setAbi(details.functions);
+		} else {
+			router.push("/");
+		}
 	}, []);
 
 	return (

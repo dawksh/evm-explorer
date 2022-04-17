@@ -1,10 +1,10 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Button } from "@chakra-ui/react";
 import Link from "next/link";
 
 const FunctionCard = ({ func, index }: any) => {
 	return (
 		<Link href={`/explore/${index}`}>
-			<Box
+			<Button
 				borderRadius={8}
 				mx={2}
 				my={4}
@@ -12,9 +12,10 @@ const FunctionCard = ({ func, index }: any) => {
 				minHeight={4}
 				border={"1px"}
 				borderColor="whiteAlpha"
+				bgColor={"transparent"}
 			>
 				<Flex>{func.name}</Flex>
-			</Box>
+			</Button>
 		</Link>
 	);
 };
