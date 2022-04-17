@@ -6,12 +6,15 @@ import { useRouter } from "next/router";
 function Explore() {
 	const [contractAddress, setContractAddress] = useState<null | string>(null);
 	const [abi, setAbi] = useState<null | Array<any>>(null);
+
 	const router = useRouter();
+
 	useEffect(() => {
 		let details = JSON.parse(localStorage.getItem("details") as string);
 		setContractAddress(details.address);
 		setAbi(details.functions);
 	}, []);
+
 	return (
 		<Box p={8}>
 			<Flex

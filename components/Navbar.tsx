@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Flex, Button } from "@chakra-ui/react";
-import { ethers } from "ethers";
 
 declare const window: any;
 
@@ -13,6 +12,14 @@ function Navbar() {
 		});
 		setAccount(accounts[0]);
 	};
+
+	useEffect(() => {
+		let conf = localStorage.getItem("Autoconnect");
+		if (conf === "true") {
+			connectWallet();
+		}
+	});
+
 	return (
 		<Box p={4}>
 			<Flex justify={"space-between"} align="center" maxHeight={"3xs"}>

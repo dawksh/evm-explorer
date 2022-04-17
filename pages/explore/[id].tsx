@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { Box, Flex, Input, Button, Heading } from "@chakra-ui/react";
+import { Box, Flex, Input, Button, Heading, Textarea } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import Navbar from "../../components/Navbar";
 
@@ -13,6 +13,8 @@ const ID = () => {
 	const [abi, setAbi] = useState<null | Array<any>>(null);
 	const [params, setParams] = useState<any>("");
 	const [fee, setFee] = useState<any>("0");
+	const [response, setResponse] = useState<any>(null);
+	const [loading, setLoading] = useState<boolean>(false);
 
 	let contract: any;
 
@@ -36,6 +38,7 @@ const ID = () => {
 	});
 
 	const runTxn = async () => {
+		setLoading(true);
 		let funcName = abi && abi[parseInt(id as string)].name;
 		console.log(contract);
 		try {
@@ -43,7 +46,15 @@ const ID = () => {
 				value: ethers.utils.parseEther(fee),
 			});
 			console.log(txn);
+			if (typeof txn === "object") {
+				setResponse(JSON.stringify(txn));
+				setLoading(false);
+			} else {
+				setResponse(txn);
+				setLoading(false);
+			}
 		} catch (e) {
+			setLoading(false);
 			alert("error occurred, check console");
 			console.error(e);
 		}
@@ -53,6 +64,7 @@ const ID = () => {
 		<>
 			<Navbar />
 			<Box p={8}>
+				<Button onClick={(e) => router.back()}>🔙 Go Back</Button>
 				{id && (
 					<Flex justify={"center"} align="center" direction="column">
 						<Heading my={4}>
@@ -62,11 +74,23 @@ const ID = () => {
 							abi[parseInt(id as string)].inputs.map(
 								(el: any) => (
 									<Input
+										key={el.name}
+										type={el.type}
+										required
 										placeholder={el.name}
+										my={4}
 										onChange={(e: any) => {
+											let val: any;
+											if (el.type == "uint256") {
+												val = ethers.utils.parseEther(
+													e.target.value
+												);
+											} else {
+												val = e.target.value;
+											}
 											setParams({
 												...params,
-												[el.name]: e.target.value,
+												[el.name]: val,
 											});
 										}}
 									/>
@@ -76,6 +100,7 @@ const ID = () => {
 						abi[parseInt(id as string)].stateMutability ===
 							"payable" ? (
 							<Input
+								value={fee}
 								my={4}
 								placeholder="Value in Ether"
 								onChange={(e) => setFee(e.target.value)}
@@ -83,9 +108,23 @@ const ID = () => {
 						) : (
 							false
 						)}
-						<Button p={4} onClick={runTxn} my={6}>
+						<Button
+							isLoading={loading}
+							p={4}
+							onClick={runTxn}
+							my={6}
+						>
 							Run{" "}
 						</Button>
+						{response ? (
+							<Textarea
+								minHeight={"sm"}
+								value={response}
+								isReadOnly
+							/>
+						) : (
+							false
+						)}
 					</Flex>
 				)}
 			</Box>
