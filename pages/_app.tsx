@@ -5,6 +5,7 @@ import "@fontsource/inter";
 import { DefaultSeo } from "next-seo";
 import splitbee from "@splitbee/web";
 import { useEffect } from "react";
+import Head from "next/head";
 
 const theme = extendTheme({
 	fonts: {
@@ -32,6 +33,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 	return (
 		<ChakraProvider theme={theme}>
+			<Head>
+				<title>EVM Explorer</title>
+			</Head>
 			<DefaultSeo
 				openGraph={{
 					type: "website",
