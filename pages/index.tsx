@@ -32,7 +32,7 @@ const Home: NextPage = () => {
 	return (
 		<Box p={8}>
 			<Flex justify={"center"} alignItems={"center"} direction={"column"}>
-				<Heading my={6}>Some App Name</Heading>
+				<Heading my={6}>EVM Explorer</Heading>
 				<Input
 					my={4}
 					placeholder={"Contract address"}
