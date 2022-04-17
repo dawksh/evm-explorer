@@ -3,6 +3,7 @@ import { Box, Flex, Heading, Textarea, Input, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import { ethers } from "ethers";
 import { useRouter } from "next/router";
+import splitbee from "@splitbee/web";
 
 const Home: NextPage = () => {
 	const [contractAddress, setContractAddress] = useState<null | string>(null);
@@ -11,6 +12,7 @@ const Home: NextPage = () => {
 	const router = useRouter();
 
 	const explore = () => {
+		splitbee.track("Explore");
 		if (!contractAddress || !abi) {
 			alert("Fill all the fields");
 		} else {

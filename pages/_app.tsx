@@ -3,6 +3,8 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 import "@fontsource/inter";
 import { DefaultSeo } from "next-seo";
+import splitbee from "@splitbee/web";
+import { useEffect } from "react";
 
 const theme = extendTheme({
 	fonts: {
@@ -24,6 +26,10 @@ const theme = extendTheme({
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
+	useEffect(() => {
+		splitbee.init();
+	}, []);
+
 	return (
 		<ChakraProvider theme={theme}>
 			<DefaultSeo
