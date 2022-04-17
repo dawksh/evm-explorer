@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Flex, Button } from "@chakra-ui/react";
+import { toast } from "react-toastify";
 
 declare const window: any;
 
@@ -7,10 +8,14 @@ function Navbar() {
 	const [account, setAccount] = useState<string | null>(null);
 
 	const connectWallet = async () => {
-		let accounts = await window.ethereum.request({
-			method: "eth_requestAccounts",
-		});
-		setAccount(accounts[0]);
+		if (window.ethereum) {
+			let accounts = await window.ethereum.request({
+				method: "eth_requestAccounts",
+			});
+			setAccount(accounts[0]);
+		} else {
+			toast("No injected ethereum environment found");
+		}
 	};
 
 	useEffect(() => {
@@ -23,7 +28,7 @@ function Navbar() {
 	return (
 		<Box p={4}>
 			<Flex justify={"space-between"} align="center" maxHeight={"3xs"}>
-				Some App Name
+				EVM Explorer
 				{account ? (
 					<Button>
 						{account.substring(0, 4) +

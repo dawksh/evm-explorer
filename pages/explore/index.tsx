@@ -4,7 +4,7 @@ import FunctionCard from "../../components/FunctionCard";
 import { useRouter } from "next/router";
 
 function Explore() {
-	const [contractAddress, setContractAddress] = useState<null | string>(null);
+	const [contractAddress, setContractAddress] = useState<any>(null);
 	const [abi, setAbi] = useState<null | Array<any>>(null);
 
 	const router = useRouter();
@@ -23,9 +23,9 @@ function Explore() {
 				alignItems={"center"}
 			>
 				<Input
-					value={contractAddress as string}
-					disabled
-					maxWidth={"sm"}
+					value={(contractAddress as string) || ""}
+					isReadOnly
+					maxWidth={"md"}
 					my={8}
 				/>
 				<Flex

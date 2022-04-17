@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { Box, Flex, Input, Button, Heading, Textarea } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import Navbar from "../../components/Navbar";
+import { toast } from "react-toastify";
 
 declare const window: any;
 
@@ -22,6 +23,7 @@ const ID = () => {
 		let details = JSON.parse(localStorage.getItem("details") as string);
 		setContractAddress(details.address);
 		setAbi(details.functions);
+		toast("Select the network in metamask before running the function");
 	}, []);
 
 	useEffect(() => {
@@ -62,7 +64,6 @@ const ID = () => {
 
 	return (
 		<>
-			<Navbar />
 			<Box p={8}>
 				<Button onClick={(e) => router.back()}>🔙 Go Back</Button>
 				{id && (

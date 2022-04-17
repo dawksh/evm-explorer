@@ -6,6 +6,9 @@ import { DefaultSeo } from "next-seo";
 import splitbee from "@splitbee/web";
 import { useEffect } from "react";
 import Head from "next/head";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Navbar from "../components/Navbar";
 
 const theme = extendTheme({
 	fonts: {
@@ -36,6 +39,18 @@ function MyApp({ Component, pageProps }: AppProps) {
 			<Head>
 				<title>EVM Explorer</title>
 			</Head>
+			<ToastContainer
+				position="top-right"
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+				theme="dark"
+			/>
 			<DefaultSeo
 				openGraph={{
 					type: "website",
@@ -49,6 +64,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 					cardType: "summary_large_image",
 				}}
 			/>
+			<Navbar />
 			<Component {...pageProps} />
 		</ChakraProvider>
 	);
