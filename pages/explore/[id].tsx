@@ -39,6 +39,30 @@ const ID = () => {
 		}
 	});
 
+	const paidTxn = async () => {
+		setLoading(true);
+		let funcName = abi && abi[parseInt(id as string)].name;
+		console.log(contract);
+		console.log(...Object.values(params));
+		try {
+			let txn = await contract[funcName](...Object.values(params), {
+				value: ethers.utils.parseEther(fee),
+			});
+			console.log(txn);
+			if (typeof txn === "object") {
+				setResponse(JSON.stringify(txn));
+				setLoading(false);
+			} else {
+				setResponse(txn);
+				setLoading(false);
+			}
+		} catch (e) {
+			setLoading(false);
+			alert("error occurred, check console");
+			console.error(e);
+		}
+	};
+
 	const runTxn = async () => {
 		setLoading(true);
 		let funcName = abi && abi[parseInt(id as string)].name;
@@ -57,6 +81,14 @@ const ID = () => {
 			setLoading(false);
 			alert("error occurred, check console");
 			console.error(e);
+		}
+	};
+
+	const transact = async () => {
+		if (abi && abi[parseInt(id as string)].stateMutability === "payable") {
+			await paidTxn();
+		} else {
+			await runTxn();
 		}
 	};
 
@@ -101,6 +133,7 @@ const ID = () => {
 							<Input
 								value={fee}
 								my={4}
+								type="number"
 								placeholder="Value in Ether"
 								onChange={(e) => setFee(e.target.value)}
 								variant="flushed"
@@ -111,7 +144,7 @@ const ID = () => {
 						<Button
 							isLoading={loading}
 							p={4}
-							onClick={runTxn}
+							onClick={transact}
 							my={6}
 						>
 							Run{" "}
