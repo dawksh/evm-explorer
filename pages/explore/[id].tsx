@@ -44,9 +44,7 @@ const ID = () => {
 		let funcName = abi && abi[parseInt(id as string)].name;
 		console.log(contract);
 		try {
-			let txn = await contract[funcName](...Object.values(params), {
-				value: ethers.utils.parseEther(fee),
-			});
+			let txn = await contract[funcName](...Object.values(params));
 			console.log(txn);
 			if (typeof txn === "object") {
 				setResponse(JSON.stringify(txn));
@@ -105,6 +103,7 @@ const ID = () => {
 								my={4}
 								placeholder="Value in Ether"
 								onChange={(e) => setFee(e.target.value)}
+								variant="flushed"
 							/>
 						) : (
 							false
